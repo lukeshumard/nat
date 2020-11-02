@@ -104,7 +104,7 @@ prompt_kupppo_setup() {
     'prompt' "%c%I%i%u%f%S%f%s" \
     'rprompt' "%b"
 
-  PS1="${col_host}[λ]%f ${col_pwd}%2~%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
+  PS1="${col_host}λ —%f ${col_pwd}%2~%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
   RPS1="\$(prompt_kupppo_rgit) ${col_host}%*%f"
 
 }
