@@ -58,7 +58,7 @@ prompt_kupppo_setup() {
 
   zstyle ':zim:git-info' verbose 'yes'
   zstyle ':zim:git-info:branch' format " ${col_fg}[%b]%f "
-  zstyle ':zim:git-info:commit' format " (%c) "
+  zstyle ':zim:git-info:commit' format "(%c) "
   zstyle ':zim:git-info:action' format "(${col_idx}%s%f)"
   zstyle ':zim:git-info:unindexed' format "%B${col_unidx}${ind_unidx}%b"
   zstyle ':zim:git-info:indexed' format "%B${col_idx}${ind_idx}%b"
