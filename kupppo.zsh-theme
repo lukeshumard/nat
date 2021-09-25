@@ -34,7 +34,7 @@ prompt_kupppo_setup() {
   if (( terminfo[colors] >= 256 )); then
     col_user="%F{${1:-135}}"
     col_mid="%F{${2:-237}}"
-    col_fg="%{%F{white}%}"
+    col_fg="%F{${3:-231}}"
     col_unidx="%F{${5:-166}}"
     col_idx="%F{${7:-118}}"
     col_untrk="%F{${9:-161}}"
