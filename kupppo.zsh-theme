@@ -38,13 +38,13 @@ if (( ${+functions[git-info]} )); then
 
   zstyle ':zim:git-info' verbose 'yes'
   zstyle ':zim:git-info:branch' format "${col_fg}[%b]%f"
-  zstyle ':zim:git-info:commit' format "(%c) "
+  zstyle ':zim:git-info:commit' format "(%c)"
   zstyle ':zim:git-info:action' format "(${col_idx}%s%f)"
   zstyle ':zim:git-info:unindexed' format "%B${col_unidx}${ind}%b"
   zstyle ':zim:git-info:indexed' format "%B${col_idx}${ind}%b"
   zstyle ':zim:git-info:untracked' format "%B${col_untrk}${ind}%b"
   zstyle ':zim:git-info:keys' format \
-    'prompt' "%b %c%i%I%u%f%S%f%s "
+    'prompt' "%b %c%i%I%u%f "
 
   PS1='$prefix $dir $(git_prompt)%f%(!.#.$) '
   RPS1="${col_mid}%m — %*%f"
