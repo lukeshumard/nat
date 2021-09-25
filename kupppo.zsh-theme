@@ -37,15 +37,20 @@ if (( ${+functions[git-info]} )); then
   autoload -Uz add-zsh-hook && add-zsh-hook precmd git-info
 
   zstyle ':zim:git-info' verbose 'yes'
-  zstyle ':zim:git-info:branch' format "${col_fg}[%b]%f"
+  zstyle ':zim:git-info:branch' format "%b"
+  # For indicators
+  # zstyle ':zim:git-info:branch' format "${col_fg}[%b]%f"
+  # zstyle ':zim:git-info:dirty' format "${col_untrk}"
   zstyle ':zim:git-info:commit' format "(%c)"
   zstyle ':zim:git-info:action' format "(${col_idx}%s%f)"
-  zstyle ':zim:git-info:dirty' format " "
+  zstyle ':zim:git-info:clean' format ""
+  zstyle ':zim:git-info:dirty' format "${col_untrk}"
   zstyle ':zim:git-info:unindexed' format "%B${col_unidx}${ind}%b"
   zstyle ':zim:git-info:indexed' format "%B${col_idx}${ind}%b"
   zstyle ':zim:git-info:untracked' format "%B${col_untrk}${ind}%b"
   zstyle ':zim:git-info:keys' format \
-    'prompt' "%b %c%i%I%u%D%f"
+    'prompt' "${col_fg}[%f%C%D%b%f${col_fg}]%f "
+    # 'prompt' "%b %c%i%I%u%D%f"
 
   PS1='$prefix $dir $(git_prompt)%f%(!.#.$) '
   RPS1="${col_mid}%m — %*%f"
