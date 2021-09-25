@@ -70,7 +70,7 @@ prompt_kupppo_setup() {
     'prompt' "%b%c%i%I%u%f%S%f%s"
 
   PS1="\$(prompt_kupppo_prefix)${col_fg}%B%2~%b%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
-  RPS1="${col_mid}%m - %*%f"
+  RPS1="${col_mid}%m — %*%f"
 
 }
 
