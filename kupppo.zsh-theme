@@ -9,10 +9,6 @@ prompt_kupppo_git() {
   [[ -n ${git_info} ]] && print -n "${(e)git_info[prompt]}"
 }
 
-prompt_kupppo_virtualenv() {
-  [[ -n ${VIRTUAL_ENV} ]] && print -n " [%F{green}${VIRTUAL_ENV:t}%f]"
-}
-
 prompt_kupppo_prefix() {
   print "%F{${2:-237}}λ —%f "
 }
@@ -22,9 +18,6 @@ prompt_kupppo_precmd() {
 }
 
 prompt_kupppo_setup() {
-  [[ -n ${VIRTUAL_ENV} ]] && export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-  local col_user
   local col_mid
   local col_fg
   local col_unidx
@@ -32,14 +25,12 @@ prompt_kupppo_setup() {
   local col_untrk
   # use extended color palette if available
   if (( terminfo[colors] >= 256 )); then
-    col_user="%F{${1:-135}}"
     col_mid="%F{${2:-237}}"
     col_fg="%F{${3:-231}}"
     col_unidx="%F{${5:-202}}"
     col_idx="%F{${7:-118}}"
     col_untrk="%F{${9:-197}}"
   else
-    col_user="%F{${1:-magenta}}"
     col_mid="%F{${2:-grey}}"
     col_fg="%F{${3:-white}}"
     col_unidx="%F{${5:-yellow}}"
@@ -69,7 +60,7 @@ prompt_kupppo_setup() {
   zstyle ':zim:git-info:keys' format \
     'prompt' "%b%c%i%I%u%f%S%f%s"
 
-  PS1="\$(prompt_kupppo_prefix)${col_fg}%B%2~%b%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
+  PS1="\$(prompt_kupppo_prefix)${col_fg}%B%2~%b%f\$(prompt_kupppo_git)%f%(!.#.) "
   RPS1="${col_mid}%m — %*%f"
 
 }
