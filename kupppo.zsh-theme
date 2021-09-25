@@ -5,35 +5,6 @@
 #
 # Requires the `git-info` zmodule to be included in the .zimrc file.
 
-prompt_kupppo_help () {
-  cat <<EOH
-This prompt can be customized with:
-
-    prompt kupppo [username_color] [hostname_color] [pwd_color] [branch_color]
-        [unindexed_color] [unindexed_indicator]
-        [indexed_color] [indexed_indicator]
-        [untracked_color] [untracked_indicator]
-        [stashed_color] [stashed_indicator]
-
-The default values for each parameter, for 256-color terminals (or otherwise)
-are the following:
-
- 1. username color: 135 (or magenta)
- 2. hostname color: 166 (or yellow)
- 3. current working directory color: 118 (or green)
- 4. git branch name color: 81 (or cyan)
- 5. git unindexed color: 166 (or yellow)
- 6. git unindexed indicator: ●
- 7. git indexed color: 118 (or green)
- 8. git indexed indicator: ●
- 9. git untracked color: 161 (or red)
-10. git untracked indicator: ●
-
-The git stashed color and indicator are not defined by default, and will not be
-shown unless defined.
-EOH
-}
-
 prompt_kupppo_git() {
   [[ -n ${git_info} ]] && print -n " ${(e)git_info[prompt]}"
 }
@@ -42,9 +13,8 @@ prompt_kupppo_rgit() {
   [[ -n ${git_info} ]] && print -n " ${(e)git_info[rprompt]}"
 }
 
-
 prompt_kupppo_virtualenv() {
-  [[ -n ${VIRTUAL_ENV} ]] && print -n " (%F{blue}${VIRTUAL_ENV:t}%f)"
+  [[ -n ${VIRTUAL_ENV} ]] && print -n " [%F{green}${VIRTUAL_ENV:t}%f]"
 }
 
 prompt_kupppo_precmd() {
@@ -55,27 +25,23 @@ prompt_kupppo_setup() {
   [[ -n ${VIRTUAL_ENV} ]] && export VIRTUAL_ENV_DISABLE_PROMPT=1
 
   local col_user
-  local col_host
-  local col_pwd
-  local col_brnch
+  local col_mid
+  local col_fg
   local col_unidx
   local col_idx
   local col_untrk
   # use extended color palette if available
   if (( terminfo[colors] >= 256 )); then
     col_user="%F{${1:-135}}"
-    col_host="%F{${2:-237}}"
-    # col_pwd="%F{${3:-15}}"
-    col_pwd="%{$fg_bold[white]%}"
-    col_brnch="%{$fg_bold[white]%}"
+    col_mid="%F{${2:-237}}"
+    col_fg="%{%F{white}%}"
     col_unidx="%F{${5:-166}}"
     col_idx="%F{${7:-118}}"
     col_untrk="%F{${9:-161}}"
   else
     col_user="%F{${1:-magenta}}"
-    col_host="%F{${2:-grey}}"
-    col_pwd="%F{${3:-white}}"
-    col_brnch="%F{${4:-cyan}}"
+    col_mid="%F{${2:-grey}}"
+    col_fg="%F{${3:-white}}"
     col_unidx="%F{${5:-yellow}}"
     col_idx="%F{${7:-green}}"
     col_untrk="%F{${9:-red}}"
@@ -91,7 +57,7 @@ prompt_kupppo_setup() {
   prompt_opts=(cr percent sp subst)
 
   zstyle ':zim:git-info' verbose 'yes'
-  zstyle ':zim:git-info:branch' format "${col_brnch}[%b]%f"
+  zstyle ':zim:git-info:branch' format "${col_fg}[%b]%f"
   zstyle ':zim:git-info:commit' format '%c'
   zstyle ':zim:git-info:action' format "(${col_idx}%s%f)"
   zstyle ':zim:git-info:unindexed' format "${col_unidx}${ind_unidx}"
@@ -104,18 +70,9 @@ prompt_kupppo_setup() {
     'prompt' "%c%I%i%u%f%S%f%s" \
     'rprompt' "%b"
 
-  PS1="${col_host}λ —%f ${col_pwd}%2~%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
-  RPS1="\$(prompt_kupppo_rgit) ${col_host}%*%f"
+  PS1="${col_mid}λ —%f ${col_fg}%B%2~%b%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
+  RPS1="\$(prompt_kupppo_rgit) ${col_mid}%*%f"
 
-}
-
-prompt_kupppo_preview () {
-  if (( ${#} )); then
-    prompt_preview_theme kupppo "${@}"
-  else
-    prompt_preview_theme kupppo
-    prompt_preview_theme kupppo magenta yellow green cyan magenta '!' green '+' red '?' yellow '$'
-  fi
 }
 
 prompt_kupppo_setup "${@}"
