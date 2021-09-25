@@ -6,15 +6,15 @@
 # Requires the `git-info` zmodule to be included in the .zimrc file.
 
 prompt_kupppo_git() {
-  [[ -n ${git_info} ]] && print -n " ${(e)git_info[prompt]}"
-}
-
-prompt_kupppo_rgit() {
-  [[ -n ${git_info} ]] && print -n " ${(e)git_info[rprompt]}"
+  [[ -n ${git_info} ]] && print -n "${(e)git_info[prompt]}"
 }
 
 prompt_kupppo_virtualenv() {
   [[ -n ${VIRTUAL_ENV} ]] && print -n " [%F{green}${VIRTUAL_ENV:t}%f]"
+}
+
+prompt_kupppo_prefix() {
+  print "%F{${2:-237}}λ —%f "
 }
 
 prompt_kupppo_precmd() {
@@ -46,9 +46,9 @@ prompt_kupppo_setup() {
     col_idx="%F{${7:-green}}"
     col_untrk="%F{${9:-red}}"
   fi
-  local ind_unidx=${6:-●}
-  local ind_idx=${8:-●}
-  local ind_untrk=${10:-●}
+  local ind_unidx=${6:-•}
+  local ind_idx=${8:-•}
+  local ind_untrk=${10:-•}
   local col_stash=${11:+%F{${11}}}
   local ind_stash=${12}
 
@@ -57,21 +57,20 @@ prompt_kupppo_setup() {
   prompt_opts=(cr percent sp subst)
 
   zstyle ':zim:git-info' verbose 'yes'
-  zstyle ':zim:git-info:branch' format "${col_fg}[%b]%f"
-  zstyle ':zim:git-info:commit' format '%c'
+  zstyle ':zim:git-info:branch' format " ${col_fg}[%b]%f "
+  zstyle ':zim:git-info:commit' format " (%c) "
   zstyle ':zim:git-info:action' format "(${col_idx}%s%f)"
-  zstyle ':zim:git-info:unindexed' format "${col_unidx}${ind_unidx}"
-  zstyle ':zim:git-info:indexed' format "${col_idx}${ind_idx}"
-  zstyle ':zim:git-info:untracked' format "${col_untrk}${ind_untrk}"
+  zstyle ':zim:git-info:unindexed' format "%B${col_unidx}${ind_unidx}%b"
+  zstyle ':zim:git-info:indexed' format "%B${col_idx}${ind_idx}%b"
+  zstyle ':zim:git-info:untracked' format "%B${col_untrk}${ind_untrk}%b"
   if [[ -n ${ind_stash} ]]; then
     zstyle ':zim:git-info:stashed' format "${col_stash}${ind_stash}"
   fi
   zstyle ':zim:git-info:keys' format \
-    'prompt' "%c%I%i%u%f%S%f%s" \
-    'rprompt' "%b"
+    'prompt' "%b%c%i%I%u%f%S%f%s"
 
-  PS1="${col_mid}λ —%f ${col_fg}%B%2~%b%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
-  RPS1="\$(prompt_kupppo_rgit) ${col_mid}%*%f"
+  PS1="\$(prompt_kupppo_prefix)${col_fg}%B%2~%b%f\$(prompt_kupppo_git)%f\$(prompt_kupppo_virtualenv)%(!.#.) "
+  RPS1="${col_mid}%*%f"
 
 }
 
